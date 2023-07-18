@@ -4,7 +4,7 @@
 # automate your list of programs to be installed on a new system
 # build for debian based operating systems (use of apt)
 
-import sys, subprocess, shutil
+import sys, subprocess
 from colorama import Fore, Style
 
 
@@ -16,7 +16,7 @@ yellow = Fore.YELLOW
 clear = Style.RESET_ALL
 
 # list for programs and newly programs to install
-apt_programs = ["wireshark", "pip3", "docker", "terminator"] # add programs to be installed via apt here
+apt_programs = ["wireshark", "pip3", "docker.io", "terminator"] # add programs to be installed via apt here
 pip_programs = ["docker-compose"] # add programs to be installed via pip here
 install_apt = []
 install_pip = []
@@ -24,8 +24,12 @@ install_pip = []
 
 def installation_check(program, module):
 	if module == "apt":
-		check_program = shutil.which(program)
-		return check_program
+		try:
+			cmd = f"dpkg -s {program}"
+			subprocess.check_output(["dpkg", "-s", program, "|", "grep 'Status: install ok installed'"], stderr=subprocess.DEVNULL)
+			return True
+		except subprocess.CalledProcessError:
+			return False
 	if module == "pip":
 		try:
 			subprocess.check_output(["pip3", "show", program], stderr=subprocess.DEVNULL)
@@ -43,7 +47,7 @@ def program_installation(program, module):
 			error_message = None
 			if e.stderr:
 				error_lines = e.stderr.decode().splitlines()
-				error_message = next((line for line in error_lines if "Unable to locate package" in line), None)
+				error_message = next((line for line in error_lines if "E:" in line), None)
 			return error_message
 	if module == "pip":
 		try:
