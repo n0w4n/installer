@@ -1,2 +1,1 @@
-# installer
-python3 script to automate the installing of programs
+Script to automate the installation of your list with programs
