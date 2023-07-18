@@ -17,7 +17,6 @@ install_pip = []
 def installation_check(program, module):
 	if module == "apt":
 		try:
-			cmd = f"dpkg -s {program}"
 			subprocess.check_output(["dpkg", "-s", program, "|", "grep 'Status: install ok installed'"], stderr=subprocess.DEVNULL)
 			return True
 		except subprocess.CalledProcessError:
@@ -54,7 +53,7 @@ def program_installation(program, module):
 
 
 def main():
-	print(f"[-] checking programs:")
+	print("[-] checking programs:")
 	# checking for installed apt programs
 	for program in apt_programs:
 		result = installation_check(program, "apt")
@@ -63,6 +62,7 @@ def main():
 		else:
 			print(f"    {program} is not installed")
 			install_apt.append(program)
+
 	# checking for installed pip programs
 	for program in pip_programs:
 		result = installation_check(program, "pip")
@@ -71,12 +71,13 @@ def main():
 		else:
 			print(f"    {program} is not installed")
 			install_pip.append(program)
-	# if needed, installing missing programs
+
+	# prompting user for installation
 	if len(install_apt) != 0 or len(install_pip) != 0: 
-		text = f"[-] Installing missing programs (Y/n)?: "
-		user_input = input(text)
-		if user_input.lower() == "y" or user_input.lower() == "yes":
-			print(f"[-] Installing programs:")
+		text = "[-] Installing missing programs (Y/n)?: "
+		user_input = input(text).lower()
+		if user_input == "y" or user_input == "yes":
+			print("[-] Installing programs:")
 			for program in install_apt:
 				result = program_installation(program, "apt")
 				if result is True:
