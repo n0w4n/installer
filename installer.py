@@ -4,7 +4,7 @@
 # automate your list of programs to be installed on a new system
 # build for debian based operating systems (use of apt)
 
-import sys, subprocess
+import subprocess
 
 
 # list for programs and newly programs to install
