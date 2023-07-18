@@ -2,6 +2,7 @@
 
 # created by n0w4n
 # automate your list of programs to be installed on a new system
+# build for debian based operating systems (use of apt)
 
 import sys, subprocess, shutil
 from colorama import Fore, Style
