@@ -5,15 +5,7 @@
 # build for debian based operating systems (use of apt)
 
 import sys, subprocess
-from colorama import Fore, Style
 
-
-# vars for coloring text
-red = Fore.RED
-green = Fore.GREEN
-blue = Fore.BLUE
-yellow = Fore.YELLOW
-clear = Style.RESET_ALL
 
 # list for programs and newly programs to install
 apt_programs = ["wireshark", "pip3", "docker.io", "terminator"] # add programs to be installed via apt here
@@ -62,41 +54,41 @@ def program_installation(program, module):
 
 
 def main():
-	print(f"{blue}[-] checking programs:{clear}")
+	print(f"[-] checking programs:")
 	# checking for installed apt programs
 	for program in apt_programs:
 		result = installation_check(program, "apt")
 		if result is not None:
-			print(f"    {green}{program} is installed{clear}")
+			print(f"    {program} is installed")
 		else:
-			print(f"    {yellow}{program} is not installed{clear}")
+			print(f"    {program} is not installed")
 			install_apt.append(program)
 	# checking for installed pip programs
 	for program in pip_programs:
 		result = installation_check(program, "pip")
 		if result is True:
-			print(f"    {green}{program} is installed{clear}")
+			print(f"    {program} is installed")
 		else:
-			print(f"    {yellow}{program} is not installed{clear}")
+			print(f"    {program} is not installed")
 			install_pip.append(program)
 	# if needed, installing missing programs
 	if len(install_apt) != 0 or len(install_pip) != 0: 
-		text = f"{blue}[-] Installing missing programs (Y/n)?:{clear} "
+		text = f"[-] Installing missing programs (Y/n)?: "
 		user_input = input(text)
 		if user_input.lower() == "y" or user_input.lower() == "yes":
-			print(f"{blue}[-] Installing programs:{clear}")
+			print(f"[-] Installing programs:")
 			for program in install_apt:
 				result = program_installation(program, "apt")
 				if result is True:
-					print(f"    {green}{program} installed{clear}")
+					print(f"    {program} installed")
 				else:
-					print(f"{red}    {result}{clear}")
+					print(f"    {result}")
 			for program in install_pip:
 				result = program_installation(program, "pip")
 				if result is True:
-					print(f"    {green}{program} installed{clear}")
+					print(f"    {program} installed")
 				else:
-					print(f"{red}    {result}{clear}")
+					print(f"    {result}")
 
 
 if __name__ == "__main__":
